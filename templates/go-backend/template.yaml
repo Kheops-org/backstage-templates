@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: go-backend-template
+  name: go-backend-template-sreez
   title: Fully featured Go backend
   description: Create a Go backend application with CI/CD, APM, GitOps
   tags:
