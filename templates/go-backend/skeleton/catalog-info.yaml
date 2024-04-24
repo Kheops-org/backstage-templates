@@ -1,0 +1,52 @@
+{%- if values.componentName %}
+  {%- set name = values.componentName %}
+{%- else %}
+  {%- set name = values.repoName %}
+{% endif -%}
+
+apiVersion: backstage.io/v1alpha1
+{%- if values.entityKind %}
+kind: ${{ values.entityKind }}
+{%- else %}
+kind: Component
+{%- endif %}
+metadata:
+  name: ${{ name }}
+  {%- if values.description %}
+  description: ${{ values.description }}
+  {%- endif %}
+  links:
+    - url: https://github.com/${{ values.orgName }}/${{ values.repoName }}
+      title: Source Code
+      icon: github
+    - url: https://argocd-server-sreez.apps.oc-med.wk.nt.local/applications/sreez/${{ name }}
+      title: ArgoCD Deployment
+      icon: cached
+    - url: http://localhost:8090
+      title: HyperDX Logs and Monitoring
+      icon: monitor_heart
+  tags:
+    - go
+    - sreez
+  annotations:
+    argocd/app-name: ${{ name }}
+    backstage.io/kubernetes-id: ${{ name }}
+spec:
+  type: ${{ values.applicationType }}
+  {%- if values.system %}
+  system: ${{ values.system }}
+  {%- endif %}
+  {%- if values.lifecycle %}
+  lifecycle: ${{ values.lifecycle }}
+  {%- else %}
+  lifecycle: production
+  {%- endif %}
+  owner: ${{ values.owner }}
+  {%- if values.dependsOn %}
+  dependsOn:
+    - ${{ values.dependsOn }}
+  {%- endif %}
+  {%- if values.partOf %}
+  partOf:
+    - ${{ values.partOf }}
+  {%- endif %}

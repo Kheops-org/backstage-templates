@@ -1,0 +1,17 @@
+{%- if values.componentName %}
+  {%- set name = values.componentName %}
+{%- else %}
+  {%- set name = values.repoName %}
+{% endif -%}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "${{ name }}.fullname" . }}
+spec:
+  host: {{ .Values.route.host }}
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: {{ include "${{ name }}.fullname" . }}
+

@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: rhdh-collection
+  description: A collection of Example Software Templates for Red Hat Developer Hub
+spec:
+  type: url
+  targets:
+    - templates/go-backend/template.yaml
+
