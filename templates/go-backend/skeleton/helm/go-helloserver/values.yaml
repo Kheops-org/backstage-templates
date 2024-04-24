@@ -52,6 +52,16 @@ service:
 route:
   host: ${{ name }}-sreez.apps.oc-med.wk.nt.local
 
+env:
+  - name: "OTEL_SERVICE_NAME"
+    value: "${{ name }}"
+  - name: "OTEL_EXPORTER_OTLP_HEADERS"
+    value: "authorization=ecb7c3dd-b001-4f56-85fd-e332f8fe21e1"
+  - name: "OTEL_EXPORTER_OTLP_ENDPOINT"
+    value: "http://192.168.12.160:4318"
+  - name: "OTEL_EXPORTER_OTLP_PROTOCOL"
+    value: "http/protobuf"
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
