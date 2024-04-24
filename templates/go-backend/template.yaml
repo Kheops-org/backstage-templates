@@ -20,6 +20,7 @@ spec:
         - repoName
         - owner
         - system
+        - repoVisibility
         - port
       properties:
         orgName:
@@ -49,6 +50,17 @@ spec:
             catalogFilter:
               kind:
                 - System
+        repoVisibility: 
+          title: Repository visibility
+          type: string
+          default: public
+          description: Make the repository public or private
+          enum:
+            - public
+            - private
+          enumNames:
+            - 'Public'
+            - 'Private'
         port:
           title: Port
           type: number
@@ -82,6 +94,7 @@ spec:
         allowedHosts: ['github.com']
         description: ${{ parameters.description }}
         repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
+        repoVisibility: ${{ parameters.repoVisibility }}
         defaultBranch: main
 
     - id: register
