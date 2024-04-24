@@ -21,7 +21,7 @@ jobs:
     - name: Generate Time-Based Tag
       id: generate-tag
       run: |
-        TAG=$(git describe)
+        TAG=$(date +"%Y%m%d-%H%M%S")
         echo "::set-output name=tag::$TAG"
           
     - name: Login to Docker Registry
