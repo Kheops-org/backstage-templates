@@ -127,7 +127,6 @@ spec:
         repoPath: ${{ parameters.repoPath }}
         valuesFiles: ${{ parameters.valuesFiles }}
         labelValue: ${{ parameters.repoName }}
-        path: "helm/go-helloserver"
 
     - id: register
       name: Registering the Catalog Info Component
