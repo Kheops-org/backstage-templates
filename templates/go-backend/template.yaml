@@ -65,6 +65,17 @@ spec:
           title: ArgoCD Instance
           type: string
           default: argocd-server-sreez.apps.oc-med.wk.nt.local:443
+        repoPath:
+          title: Path in repository that ArgoCD should watch
+          type: string
+          default: helm/go-helloserver
+        valuesFiles:
+          title: Values Files for ArgoCD
+          type: array
+          items:
+            type: string
+          default:
+            - values.yaml
         namespace:
           title: K8s Namespace
           type: string
@@ -107,12 +118,14 @@ spec:
 
     - id: create-argocd-resources
       name: Create ArgoCD Resources
-      action: argocd:create-resources
+      action: argocd:app:create
       input:
         appName: ${{ parameters.repoName }}-dev
         argoInstance: ${{ parameters.argoinstance }}
         namespace: ${{ parameters.namespace }}
         repoUrl: ${{ steps.publish.output.remoteUrl }}
+        repoPath: ${{ parameters.repoPath }}
+        valuesFiles: ${{ parameters.valuesFiles }}
         labelValue: ${{ parameters.repoName }}
         path: "helm/go-helloserver"
 
