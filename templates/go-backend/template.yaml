@@ -61,6 +61,14 @@ spec:
           enumNames:
             - 'Public'
             - 'Private'
+        argoInstance:
+          title: ArgoCD Instance
+          type: string
+          default: argocd-server-sreez.apps.oc-med.wk.nt.local:443
+        namespace:
+          title: K8s Namespace
+          type: string
+          default: sreez
         port:
           title: Port
           type: number
@@ -95,7 +103,18 @@ spec:
         description: ${{ parameters.description }}
         repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         repoVisibility: ${{ parameters.repoVisibility }}
-        defaultBranch: main
+        defaultBranch: master
+
+    - id: create-argocd-resources
+      name: Create ArgoCD Resources
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.repoName }}-dev
+        argoInstance: ${{ parameters.argoinstance }}
+        namespace: ${{ parameters.namespace }}
+        repoUrl: ${{ steps.publish.output.remoteUrl }}
+        labelValue: ${{ parameters.repoName }}
+        path: "helm/go-helloserver"
 
     - id: register
       name: Registering the Catalog Info Component
