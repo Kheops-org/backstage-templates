@@ -121,7 +121,7 @@ spec:
       action: argocd:app:create
       input:
         appName: ${{ parameters.repoName }}-dev
-        argoInstance: ${{ parameters.argoinstance }}
+        argoInstance: ${{ parameters.argoInstance }}
         namespace: ${{ parameters.namespace }}
         repoUrl: ${{ steps.publish.output.remoteUrl }}
         repoPath: ${{ parameters.repoPath }}
