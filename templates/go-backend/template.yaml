@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: go-backend-template-sreez
-  title: Fully featured Go backend
+  name: sreez-go-backend
+  title: Go backend with ArgoCD setup
   description: Create a Go backend application with CI/CD, APM, GitOps
   tags:
     - recommended
