@@ -32,7 +32,7 @@ metadata:
     argocd/app-name: ${{ name }}
     backstage.io/kubernetes-id: ${{ name }}
     github.com/workflows: docker-image.yml
-    github.com/project-slug: ${{ ornName }}/${{ repoName }}
+    github.com/project-slug: ${{ orgName }}/${{ repoName }}
 spec:
   type: ${{ values.applicationType }}
   {%- if values.system %}
