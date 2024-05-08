@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: go-backend-template-sreez
-  title: Fully featured Go backend
+  name: sreez-go-backend
+  title: Go backend with ArgoCD setup
   description: Create a Go backend application with CI/CD, APM, GitOps
   tags:
     - recommended
@@ -14,14 +14,11 @@ spec:
   type: service
 
   parameters:
-    - title: Provide information about the new component
+    - title: Repository Details
       required:
         - orgName
         - repoName
-        - owner
-        - system
         - repoVisibility
-        - port
       properties:
         orgName:
           title: Organization Name
@@ -33,6 +30,22 @@ spec:
           title: Description
           type: string
           description: Help others understand what this component is for
+        repoVisibility: 
+          title: Repository visibility
+          type: string
+          default: public
+          description: Make the repository public or private
+          enum:
+            - public
+            - private
+          enumNames:
+            - 'Public'
+            - 'Private'
+    - title: Account Details
+      required:
+        - owner
+        - system
+      properties:
         owner:
           title: Owner
           type: string
@@ -50,17 +63,7 @@ spec:
             catalogFilter:
               kind:
                 - System
-        repoVisibility: 
-          title: Repository visibility
-          type: string
-          default: public
-          description: Make the repository public or private
-          enum:
-            - public
-            - private
-          enumNames:
-            - 'Public'
-            - 'Private'
+    - title: GitOps Parameters
         argoInstance:
           title: ArgoCD Instance
           type: string
@@ -116,17 +119,31 @@ spec:
         repoVisibility: ${{ parameters.repoVisibility }}
         defaultBranch: master
 
-    - id: create-argocd-resources
-      name: Create ArgoCD Resources
-      action: argocd:app:create
+    - id: create-argocd-application
+      name: Create ArgoCD Application
+      action: kubernetes:apply
       input:
-        appName: ${{ parameters.repoName }}-dev
-        argoInstance: ${{ parameters.argoInstance }}
-        namespace: ${{ parameters.namespace }}
-        repoUrl: ${{ steps.publish.output.remoteUrl }}
-        repoPath: ${{ parameters.repoPath }}
-        valuesFiles: ${{ parameters.valuesFiles }}
-        labelValue: ${{ parameters.repoName }}
+        namespaced: true
+        manifest: |
+          apiVersion: argoproj.io/v1alpha1
+          kind: Application
+          metadata:
+            name: ${{ parameters.appName }}
+            namespace: ${{ parameters.namespace }}
+          spec:
+            destination:
+              namespace: ${{ parameters.namespace }}
+              server: https://kubernetes.default.svc
+            project: default
+            source:
+              repoURL: ${{ parameters.repoUrl }}
+              targetRevision: HEAD
+              path: ${{ parameters.repoPath }}
+            syncPolicy:
+              automated:
+                selfHeal: true
+              syncOptions:
+                - CreateNamespace=true
 
     - id: register
       name: Registering the Catalog Info Component
