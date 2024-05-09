@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: argocd-template-sreez
-  title: Deploy an existing project using Argo
-  description: Deploy an existing project using Argo
+  title: Deploy an existing project using ArgoCD
+  description: Deploy an existing project using ArgoCD
   tags:
     - recommended
     - argo
@@ -16,31 +16,22 @@ spec:
   parameters:
     - title: Provide information about the new component
       required:
-        - orgName
+        - repoUrl
         - repoName
-        - owner
         - system
         - port
       properties:
-        orgName:
-          title: Organization Name
+        repoUrl:
+          title: URL of the github org
           type: string
+          default: https://github.com/Kheops-org
         repoName:
-          title: Existing Repository Name
+          title: Existing repository name
           type: string
         description:
           title: Description
           type: string
           description: Help others understand what this component is for
-        owner:
-          title: Owner
-          type: string
-          ui:field: EntityPicker
-          ui:options:
-            catalogFilter:
-              kind:
-                - Group
-                - User
         system:
           title: System
           type: string
@@ -53,14 +44,10 @@ spec:
           title: ArgoCD Instance
           type: string
           default: argocd-server-sreez.apps.oc-med.wk.nt.local:443
-        repoUrl:
-          title: URL of the github repository
-          type: string
-          default: https://github.com/Kheops-org
         repoPath:
           title: Path in repository that ArgoCD should watch
           type: string
-          default: helm/helm-chart
+          default: helm/<helm-chart-folder>
         valuesFiles:
           title: Values Files for ArgoCD
           type: array
