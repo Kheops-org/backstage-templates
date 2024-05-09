@@ -1,9 +1,9 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: go-backend-template-sreez
-  title: Fully featured Go backend
-  description: Create a Go backend application with CI/CD, APM, GitOps
+  name: argocd-template-sreez
+  title: Deploy an existing project using Argo
+  description: Deploy an existing project using Argo
   tags:
     - recommended
     - argo
@@ -20,7 +20,6 @@ spec:
         - repoName
         - owner
         - system
-        #- repoVisibility
         - port
       properties:
         orgName:
