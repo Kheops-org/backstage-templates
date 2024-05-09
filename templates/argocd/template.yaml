@@ -85,7 +85,7 @@ spec:
         appName: ${{ parameters.repoName }}-dev
         argoInstance: ${{ parameters.argoInstance }}
         namespace: ${{ parameters.namespace }}
-        repoUrl: ${{ parameters.repoUrl }}
+        repoUrl: ${{ parameters.repoUrl }}/${{ parameters.repoName }}
         repoPath: ${{ parameters.repoPath }}
         valuesFiles: ${{ parameters.valuesFiles }}
         labelValue: ${{ parameters.repoName }}
@@ -93,4 +93,4 @@ spec:
   output:
     links:
       - title: Open the Source Code Repository
-        url: ${{ parameters.repoUrl }}/${{ parameters.repoPath }}
+        url: ${{ parameters.repoUrl }}/${{ parameters.repoName }}
