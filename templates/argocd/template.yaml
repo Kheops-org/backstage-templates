@@ -78,4 +78,4 @@ spec:
       - title: Open the Source Code Repository
         url: ${{ parameters.repoUrl }}/${{ parameters.repoName }}
       - title: Open ArgoCD application
-        url: https://${{ parameters.argoInstance }}/applications/${{ parameters.namespace }}/{{ parameters.repoName }}-dev
+        url: https://${{ parameters.argoInstance }}/applications/${{ parameters.namespace }}/${{ parameters.repoName }}-dev
