@@ -1,0 +1,97 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: go-backend-template-sreez
+  title: Fully featured Go backend
+  description: Create a Go backend application with CI/CD, APM, GitOps
+  tags:
+    - recommended
+    - argo
+    - sreez
+spec:
+  owner: nationtech
+  system: sreez
+  type: service
+
+  parameters:
+    - title: Provide information about the new component
+      required:
+        - orgName
+        - repoName
+        - owner
+        - system
+        #- repoVisibility
+        - port
+      properties:
+        orgName:
+          title: Organization Name
+          type: string
+        repoName:
+          title: Existing Repository Name
+          type: string
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this component is for
+        owner:
+          title: Owner
+          type: string
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind:
+                - Group
+                - User
+        system:
+          title: System
+          type: string
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind:
+                - System
+        argoInstance:
+          title: ArgoCD Instance
+          type: string
+          default: argocd-server-sreez.apps.oc-med.wk.nt.local:443
+        repoUrl:
+          title: URL of the github repository
+          type: string
+          default: https://github.com/Kheops-org
+        repoPath:
+          title: Path in repository that ArgoCD should watch
+          type: string
+          default: helm/helm-chart
+        valuesFiles:
+          title: Values Files for ArgoCD
+          type: array
+          items:
+            type: string
+          default:
+            - values.yaml
+        namespace:
+          title: K8s Namespace
+          type: string
+          default: sreez
+        port:
+          title: Port
+          type: number
+          default: 8080
+          description: Override the port exposed for the application
+  steps:
+    - id: create-argocd-resources
+      name: Create ArgoCD Resources
+      action: argocd:app:create
+      input:
+        appName: ${{ parameters.repoName }}-dev
+        argoInstance: ${{ parameters.argoInstance }}
+        namespace: ${{ parameters.namespace }}
+        repoUrl: ${{ parameters.repoUrl }}
+        repoPath: ${{ parameters.repoPath }}
+        valuesFiles: ${{ parameters.valuesFiles }}
+        labelValue: ${{ parameters.repoName }}
+
+  output:
+    links:
+      - title: Open the Source Code Repository
+        url: ${{ parameters.repoUrl }}/${{ parameters.repoPath }}

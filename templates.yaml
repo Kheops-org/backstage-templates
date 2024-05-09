@@ -6,4 +6,5 @@ metadata:
 spec:
   targets:
     - ./templates/go-backend/template.yaml
+    - ./templates/argocd/template.yaml
 
