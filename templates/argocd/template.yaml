@@ -28,10 +28,6 @@ spec:
         repoName:
           title: Existing repository name
           type: string
-        description:
-          title: Description
-          type: string
-          description: Help others understand what this component is for
         system:
           title: System
           type: string
