@@ -1,0 +1,96 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: devspaces-workspace-template-sreez
+  title: Create a DevSpaces workspace for an existing repo
+  description: Create a DevSpaces workspace for an existing repo
+  tags:
+    - devspaces
+    - recommended
+    - sreez
+spec:
+  owner: nationtech
+  system: sreez
+  type: service
+
+  parameters:
+    - title: Provide information about the new component
+      required:
+        - repoUrl
+        - repoName
+        - system
+        - port
+      properties:
+        repoUrl:
+          title: URL of the github org
+          type: string
+          default: https://github.com/Kheops-org
+        repoName:
+          title: Existing repository name
+          type: string
+        system:
+          title: System
+          type: string
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind:
+                - System
+        argoInstance:
+          title: ArgoCD Instance
+          type: string
+          default: argocd-server-sreez.apps.oc-med.wk.nt.local:443
+        repoPath:
+          title: Path in repository that ArgoCD should watch
+          type: string
+          default: helm/<helm-chart-folder>
+        valuesFiles:
+          title: Values Files for ArgoCD
+          type: array
+          items:
+            type: string
+          default:
+            - values.yaml
+        namespace:
+          title: K8s Namespace
+          type: string
+          default: sreez
+        port:
+          title: Port
+          type: number
+          default: 8080
+          description: Override the port exposed for the application
+  steps:
+    - id: create-workspace
+      name: Create DevSpaces Workspace
+      action: scaffolder:fetch:template
+      input:
+        #url: https://devspaces-api.openshift.example.com/api/workspaces
+        url: https://devspaces-api.apps.oc-med.wk.nt.local/api/workspaces
+        method: POST
+        #headers:
+        #  Authorization: Bearer ${{ parameters.devspacesToken }}
+        body:
+          name: ${{ parameters.repoName }}-workspace
+          #gitRepoUrl: https://github.com/${{ parameters.repoName }}
+          gitRepoUrl: ${{ parameters.repoUrl }}/${{ parameters.repoName }}
+          # Add other necessary parameters here
+
+    #- id: create-argocd-resources
+    #  name: Create ArgoCD Resources
+    #  action: argocd:app:create
+    #  input:
+    #    appName: ${{ parameters.repoName }}-dev
+    #    argoInstance: ${{ parameters.argoInstance }}
+    #    namespace: ${{ parameters.namespace }}
+    #    repoUrl: ${{ parameters.repoUrl }}/${{ parameters.repoName }}
+    #    repoPath: ${{ parameters.repoPath }}
+    #    valuesFiles: ${{ parameters.valuesFiles }}
+    #    labelValue: ${{ parameters.repoName }}
+
+  output:
+    links:
+      - title: Open the Source Code Repository
+        url: ${{ parameters.repoUrl }}/${{ parameters.repoName }}
+      #- title: Open ArgoCD application
+      #  url: https://${{ parameters.argoInstance }}/applications/${{ parameters.namespace }}/${{ parameters.repoName }}-dev

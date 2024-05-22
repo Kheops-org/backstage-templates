@@ -7,4 +7,5 @@ spec:
   targets:
     - ./templates/go-backend/template.yaml
     - ./templates/argocd-deploy-existing-app-github/template.yaml
+    - ./templates/create-devspaces-project-from-repo/template.yaml
 
