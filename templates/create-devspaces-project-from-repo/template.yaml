@@ -63,7 +63,7 @@ spec:
   steps:
     - id: create-workspace
       name: Create DevSpaces Workspace
-      action: scaffolder:fetch:template
+      action: fetch:template
       input:
         #url: https://devspaces-api.openshift.example.com/api/workspaces
         url: https://devspaces-api.apps.oc-med.wk.nt.local/api/workspaces
