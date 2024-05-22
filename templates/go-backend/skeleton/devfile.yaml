@@ -1,6 +1,6 @@
 schemaVersion: 2.2.2
 metadata:
-  name: helloserver-${{ value.repoName }}
+  name: helloserver-${{ parameters.repoName }}
 components:
   - name: tools
     container:
