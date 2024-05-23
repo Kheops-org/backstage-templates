@@ -9,16 +9,6 @@ components:
       memoryLimit: 3Gi
 
 commands:
-  - id: configure-git
-    exec:
-      commandLine: |
-        git config --global user.email "${{ values.commitUserEmail }}" && \
-        git config --global user.name "${{ values.commitUserName }}"
-      component: tools
-      group:
-        kind: build
-        isDefault: true
-
   - id: run-application
     exec:
       label: "Run server.go"
