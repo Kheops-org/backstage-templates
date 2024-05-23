@@ -18,6 +18,8 @@ spec:
       required:
         - orgName
         - repoName
+        - commitUserName
+        - commitUserEmail
         - owner
         - system
         - repoVisibility
@@ -29,6 +31,14 @@ spec:
         repoName:
           title: Repository Name
           type: string
+        commitUserName:
+          title: Commit UserName
+          type: string
+          description: The user.name value for git commits
+        commitUserEmail:
+          title: Commit UserEmail
+          type: string
+          description: The user.email value for git commits
         description:
           title: Description
           type: string
