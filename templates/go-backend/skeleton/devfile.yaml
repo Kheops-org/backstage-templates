@@ -16,7 +16,7 @@ commands:
         git config --global user.name "${{ values.commitUserName }}"
       component: tools
       group:
-        kind: init
+        kind: build
         isDefault: true
 
   - id: run-application
@@ -26,5 +26,5 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
       commandLine: "go run server.go"
       group:
-        kind: build
+        kind: run
         isDefault: true
