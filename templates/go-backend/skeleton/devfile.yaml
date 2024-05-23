@@ -12,8 +12,8 @@ commands:
   - id: configure-git
     exec:
       commandLine: |
-        git config --global user.email "{{ values.commitUserEmail }}" && \
-        git config --global user.name "{{ values.commitUserName }}"
+        git config --global user.email "${{ values.commitUserEmail }}" && \
+        git config --global user.name "${{ values.commitUserName }}"
       component: tools
       group:
         kind: init
