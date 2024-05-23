@@ -26,5 +26,5 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
       commandLine: "go run server.go"
       group:
-        kind: run
+        kind: build
         isDefault: true
