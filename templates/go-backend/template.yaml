@@ -115,6 +115,8 @@ spec:
           port: ${{ parameters.port }}
           ci: ${{ parameters.ci }}
           sourceControl: github.com
+          commitUserEmail: ${{ parameters.commitUserEmail }}
+          commitUserName: ${{ parameters.commitUserName }}
 
     - id: publish
       name: Publishing to the Source Code Repository
