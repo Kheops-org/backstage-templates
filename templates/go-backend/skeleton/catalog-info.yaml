@@ -25,6 +25,10 @@ metadata:
     - url: http://localhost:8090
       title: HyperDX Logs and Monitoring
       icon: monitor_heart
+    - url: https://devspaces.apps.oc-med.wk.nt.local#https://github.com/${{ values.orgName }}/${{ values.repoName }}
+
+      title: VSCode Development Environment
+      icon: code
   tags:
     - go
     - sreez
