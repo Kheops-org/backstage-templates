@@ -1,0 +1,27 @@
+[
+    {
+        "identifier": {
+            "id": "golang.go"
+        },
+        "version": "0.41.1",
+        "location": {
+            "$mid": 1,
+            "fsPath": "/checode/remote/extensions/golang.go-0.41.1-universal",
+            "external": "file:///checode/remote/extensions/golang.go-0.41.1-universal",
+            "path": "/checode/remote/extensions/golang.go-0.41.1-universal",
+            "scheme": "file"
+        },
+        "relativeLocation": "golang.go-0.41.1-universal",
+        "metadata": {
+            "id": null,
+            "publisherId": null,
+            "publisherDisplayName": "golang",
+            "targetPlatform": "universal",
+            "updated": false,
+            "isPreReleaseVersion": false,
+            "hasPreReleaseVersion": false,
+            "installedTimestamp": 1716486522551,
+            "pinned": false
+        }
+    }
+]
