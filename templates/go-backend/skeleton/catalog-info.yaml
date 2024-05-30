@@ -25,7 +25,7 @@ metadata:
     # - url: http://localhost:8090
     #   title: HyperDX Logs and Monitoring
     #   icon: monitor_heart
-    - url: ${{ name }}-sreez.apps.oc-med.wk.nt.local
+    - url: http://${{ name }}-sreez.apps.oc-med.wk.nt.local
       title: Open Application
       icon: Link
     - url: https://devspaces.apps.oc-med.wk.nt.local#https://github.com/${{ values.orgName }}/${{ values.repoName }}
