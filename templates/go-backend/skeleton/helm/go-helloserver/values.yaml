@@ -32,7 +32,8 @@ serviceAccount:
   name: ""
 
 podAnnotations: {}
-podLabels: {}
+podLabels:
+  backstage.io/kubernetes-id: ${{ name }}
 
 podSecurityContext: {}
   # fsGroup: 2000
