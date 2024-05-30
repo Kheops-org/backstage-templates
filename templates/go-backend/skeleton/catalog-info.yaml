@@ -22,11 +22,13 @@ metadata:
     - url: https://argocd-server-sreez.apps.oc-med.wk.nt.local/applications/sreez/${{ name }}
       title: ArgoCD Deployment
       icon: cached
-    - url: http://localhost:8090
-      title: HyperDX Logs and Monitoring
-      icon: monitor_heart
+    # - url: http://localhost:8090
+    #   title: HyperDX Logs and Monitoring
+    #   icon: monitor_heart
+    - url: ${{ name }}-sreez.apps.oc-med.wk.nt.local
+      title: Open Application
+      icon: Link
     - url: https://devspaces.apps.oc-med.wk.nt.local#https://github.com/${{ values.orgName }}/${{ values.repoName }}
-
       title: VSCode Development Environment
       icon: code
   tags:

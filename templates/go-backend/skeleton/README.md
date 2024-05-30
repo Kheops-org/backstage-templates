@@ -4,6 +4,9 @@ ${{ values.description }}
 
 This project is created from an opinionated template including CI/CD, GitOps and more from day 1
 
+## Useful links
+Backstage Entity Page: http://localhost:3000/catalog/default/component/${{ name }}
+ArgoCD Application: https://argocd-server-sreez.apps.oc-med.wk.nt.local/applications/sreez/${{ name }}
 
 ## How to deploy to development
 
