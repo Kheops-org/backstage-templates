@@ -9,7 +9,7 @@ metadata:
   name: {{ include "${{ name }}.fullname" . }}
   labels:
     {{- include "${{ name }}.labels" . | nindent 4 }}
-    {{- with .Values.podLabels }}
+    {{- with .Values.backstageLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
@@ -28,6 +28,9 @@ spec:
       labels:
         {{- include "${{ name }}.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.backstageLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:

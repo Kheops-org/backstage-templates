@@ -32,7 +32,9 @@ serviceAccount:
   name: ""
 
 podAnnotations: {}
-podLabels:
+podLabels: {}
+
+backstageLabels:
   backstage.io/kubernetes-id: ${{ name }}
 
 podSecurityContext: {}
