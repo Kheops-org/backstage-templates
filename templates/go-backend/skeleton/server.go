@@ -23,9 +23,11 @@ import (
 var desiredNbObjects = 5
 var objectsSizeInMB = 3
 var intervalInSecs = 15
+var customMessage = "Hello"
 
 var globalSlice []byte
 var nbObjects int = 0
+var done = make(chan bool)
 
 // configure common attributes for all logs
 func newResource() *resource.Resource {
@@ -81,7 +83,7 @@ func main() {
 	defer ticker.Stop()
 
 	// Use a channel to signal when to stop
-	done := make(chan bool)
+	// done := make(chan bool)
 
 	// Start a goroutine to run the function every interval
 	go func() {
@@ -121,7 +123,7 @@ func wrapHandler(logger *zap.Logger, handler http.HandlerFunc) http.HandlerFunc 
 
 func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
-	output := fmt.Sprintf(`{"status":"ok","nbInstances":"%d","intervalInSecs":"%d"}`, nbObjects, intervalInSecs)
+	output := fmt.Sprintf(`{"status":"ok","nbInstances":"%d","intervalInSecs":"%d","customMessage":"%s"}`, nbObjects, intervalInSecs, customMessage)
 	io.WriteString(w, output)
 }
 
@@ -134,6 +136,7 @@ func recurrentFunction(t time.Time) {
 		globalSlice = append(globalSlice, data...)
 		nbObjects++
 	} else {
-		fmt.Printf("%v: Objects limit reached (%d), no new allocation\n", formattedTime, desiredNbObjects)
+		fmt.Printf("%v: Objects limit reached (%d), no new allocation, stopping ticker\n", formattedTime, desiredNbObjects)
+		done <- true
 	}
 }
