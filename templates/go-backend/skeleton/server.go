@@ -2,21 +2,30 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/hyperdxio/opentelemetry-go/otelzap"
 	"github.com/hyperdxio/opentelemetry-logs-go/exporters/otlp/otlplogs"
+	sdk "github.com/hyperdxio/opentelemetry-logs-go/sdk/logs"
 	"github.com/hyperdxio/otel-config-go/otelconfig"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel/sdk/resource"
+	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
-	sdk "github.com/hyperdxio/opentelemetry-logs-go/sdk/logs"
-	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
-	"go.opentelemetry.io/otel/sdk/resource"
 )
+
+var desiredNbObjects = 5
+var objectsSizeInMB = 3
+var intervalInSecs = 15
+
+var globalSlice []byte
+var nbObjects int = 0
 
 // configure common attributes for all logs
 func newResource() *resource.Resource {
@@ -44,7 +53,7 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 
 func main() {
 	// Initialize otel config and use it across the entire app
-  println("Service starting up")
+	println("Service starting up")
 
 	otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
 	if err != nil {
@@ -66,6 +75,25 @@ func main() {
 	logger := zap.New(otelzap.NewOtelCore(loggerProvider))
 	zap.ReplaceGlobals(logger)
 	logger.Warn("hello world", zap.String("foo", "bar"))
+
+	interval := time.Second * time.Duration(intervalInSecs)
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+
+	// Use a channel to signal when to stop
+	done := make(chan bool)
+
+	// Start a goroutine to run the function every interval
+	go func() {
+		for {
+			select {
+			case <-done:
+				return
+			case t := <-ticker.C:
+				recurrentFunction(t)
+			}
+		}
+	}()
 
 	http.Handle("/", otelhttp.NewHandler(wrapHandler(logger, ExampleHandler), "example-service"))
 
@@ -93,5 +121,19 @@ func wrapHandler(logger *zap.Logger, handler http.HandlerFunc) http.HandlerFunc 
 
 func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
-	io.WriteString(w, `{"status":"ok"}`)
+	output := fmt.Sprintf(`{"status":"ok","nbInstances":"%d","intervalInSecs":"%d"}`, nbObjects, intervalInSecs)
+	io.WriteString(w, output)
+}
+
+func recurrentFunction(t time.Time) {
+	formattedTime := t.Format("2006-01-02 15:04:05")
+	fmt.Printf("%v: Allocated objects: %d\n", formattedTime, nbObjects)
+	if nbObjects < desiredNbObjects {
+		fmt.Printf("%v: Allocating new object\n", formattedTime)
+		data := make([]byte, 1024*1024*objectsSizeInMB)
+		globalSlice = append(globalSlice, data...)
+		nbObjects++
+	} else {
+		fmt.Printf("%v: Objects limit reached (%d), no new allocation\n", formattedTime, desiredNbObjects)
+	}
 }
