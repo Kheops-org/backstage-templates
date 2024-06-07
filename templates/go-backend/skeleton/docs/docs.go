@@ -21,13 +21,35 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "telemetry"
+                    "Example"
                 ],
-                "summary": "Return OpenTelemetry payload as example",
+                "summary": "Return sample count payload",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.ExampleResponse"
+                        }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.ExampleResponse": {
+            "type": "object",
+            "properties": {
+                "instances_count": {
+                    "type": "integer"
+                },
+                "interval_sec": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "request_id": {
+                    "type": "string"
                 }
             }
         }
@@ -37,11 +59,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "",
+	Host:             "http://${{ name }}-sreez.apps.oc-med.wk.nt.local",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Swagger Example API",
-	Description:      "This is a sample server for Sreez demo",
+	Title:            "${{ values.repoName }} API",
+	Description:      "${{ values.description }}",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

@@ -1,7 +1,20 @@
+definitions:
+  main.ExampleResponse:
+    properties:
+      instances_count:
+        type: integer
+      interval_sec:
+        type: integer
+      message:
+        type: string
+      request_id:
+        type: string
+    type: object
+host: http://${{ name }}-sreez.apps.oc-med.wk.nt.local
 info:
   contact: {}
-  description: This is a sample server for Sreez demo
-  title: Swagger Example API
+  description: ${{ values.description }}
+  title: ${{ values.repoName }} API
   version: "1.0"
 paths:
   /:
@@ -11,7 +24,9 @@ paths:
       responses:
         "200":
           description: OK
-      summary: Return OpenTelemetry payload as example
+          schema:
+            $ref: '#/definitions/main.ExampleResponse'
+      summary: Return sample count payload
       tags:
-      - telemetry
+      - Example
 swagger: "2.0"

@@ -1,6 +1,6 @@
 schemaVersion: 2.2.2
 metadata:
-  name: helloserver-${{ values.repoName }}
+  name: ${{ values.orgName }}-${{ values.repoName }}
 components:
   - name: tools
     container:
@@ -11,10 +11,10 @@ components:
 commands:
   - id: run-application
     exec:
-      label: "Run server.go"
+      label: "Run"
       component: tools
       workingDir: '${PROJECT_SOURCE}'
-      commandLine: "go run server.go"
+      commandLine: "go run main.go"
       group:
         kind: run
         isDefault: true
