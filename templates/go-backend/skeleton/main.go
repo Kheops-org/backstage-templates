@@ -56,9 +56,10 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 	)
 }
 
-// @title Swagger Example API
+// @title ${{ values.repoName }} API
 // @version 1.0
-// @description This is a sample server for Sreez demo
+// @description ${{ values.description }}
+// @host http://${{ name }}-sreez.apps.oc-med.wk.nt.local
 func main() {
 	// Initialize otel config and use it across the entire app
 	println("Service starting up")
@@ -127,6 +128,7 @@ func main() {
 // @Produce      json
 // @Success      200
 // @Router       / [get]
+// @Host http://${{ name }}-sreez.apps.oc-med.wk.nt.local
 func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	output := fmt.Sprintf(`{"status":"ok","nbInstances":"%d","intervalInSecs":"%d","customMessage":"%s"}`, nbObjects, intervalInSecs, customMessage)

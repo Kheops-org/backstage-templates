@@ -1,0 +1,8 @@
+site_name: '${{ values.repoName }}'
+site_description: ${{ values.description }}
+
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

@@ -28,6 +28,9 @@ metadata:
     - url: http://${{ name }}-sreez.apps.oc-med.wk.nt.local
       title: Open Application
       icon: Link
+    - url: http://${{ name }}-sreez.apps.oc-med.wk.nt.local/swagger/index.html
+      title: Swagger UI
+      icon: Document
     - url: https://devspaces.apps.oc-med.wk.nt.local#https://github.com/${{ values.orgName }}/${{ values.repoName }}
       title: VSCode Development Environment
       icon: code
@@ -39,6 +42,7 @@ metadata:
     backstage.io/kubernetes-id: ${{ name }}
     github.com/workflows: docker-image.yml
     github.com/project-slug: ${{ values.orgName }}/${{ values.repoName }}
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: ${{ values.applicationType }}
   {%- if values.system %}
