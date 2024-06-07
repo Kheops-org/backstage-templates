@@ -1,0 +1,23 @@
+{%- if values.componentName %}
+  {%- set name = values.componentName %}
+{%- else %}
+  {%- set name = values.repoName %}
+{% endif -%}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "${{ name }}.fullname" . }}
+  labels:
+    {{- include "${{ name }}.labels" . | nindent 4 }}
+    {{- with .Values.backstageLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "${{ name }}.selectorLabels" . | nindent 4 }}

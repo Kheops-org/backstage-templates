@@ -1,0 +1,32 @@
+definitions:
+  main.ExampleResponse:
+    properties:
+      instances_count:
+        type: integer
+      interval_sec:
+        type: integer
+      message:
+        type: string
+      request_id:
+        type: string
+    type: object
+host: http://${{ name }}-sreez.apps.oc-med.wk.nt.local
+info:
+  contact: {}
+  description: ${{ values.description }}
+  title: ${{ values.repoName }} API
+  version: "1.0"
+paths:
+  /:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ExampleResponse'
+      summary: Return sample count payload
+      tags:
+      - Example
+swagger: "2.0"
