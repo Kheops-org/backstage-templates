@@ -68,7 +68,7 @@ spec:
         repoPath:
           title: Path in repository that ArgoCD should watch
           type: string
-          default: helm/go-helloserver
+          default: helm/go-sreez-sample
         valuesFiles:
           title: Values Files for ArgoCD
           type: array

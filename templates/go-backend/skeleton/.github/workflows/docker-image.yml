@@ -40,21 +40,21 @@ jobs:
     
     - name: Update Helm Chart Values
       run: |
-        sed -i "s/tag: .*/tag: {% raw %}${{ steps.generate-tag.outputs.tag }}/" ./helm/go-helloserver/values.yaml{% endraw %}
+        sed -i "s/tag: .*/tag: {% raw %}${{ steps.generate-tag.outputs.tag }}/" ./helm/go-sreez-sample/values.yaml{% endraw %}
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git diff
-        git add ./helm/go-helloserver/values.yaml
+        git add ./helm/go-sreez-sample/values.yaml
         git commit -m "Upgraded deployment to {% raw %}${{ steps.generate-tag.outputs.tag }}"{% endraw %}
 
     - name: Update Production Helm Chart Values
       if: startsWith(github.event.ref, 'refs/tags/v')
       run: |
-        sed -i "s/tag: .*/tag: {% raw %}${{ github.ref_name }}/" ./helm/go-helloserver/values-production.yaml{% endraw %}
+        sed -i "s/tag: .*/tag: {% raw %}${{ github.ref_name }}/" ./helm/go-sreez-sample/values-production.yaml{% endraw %}
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git diff
-        git add ./helm/go-helloserver/values.yaml
+        git add ./helm/go-sreez-sample/values.yaml
         git commit -m "Upgraded production deployment to {% raw %}${{ github.ref_name }}"{% endraw %}
 
     - name: Push changes
