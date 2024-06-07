@@ -1,0 +1,17 @@
+info:
+  contact: {}
+  description: This is a sample server for Sreez demo
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Return OpenTelemetry payload as example
+      tags:
+      - telemetry
+swagger: "2.0"

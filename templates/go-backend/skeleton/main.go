@@ -9,15 +9,18 @@ import (
 	"os"
 	"time"
 
+	"github.com/go-chi/chi"
 	"github.com/hyperdxio/opentelemetry-go/otelzap"
 	"github.com/hyperdxio/opentelemetry-logs-go/exporters/otlp/otlplogs"
 	sdk "github.com/hyperdxio/opentelemetry-logs-go/sdk/logs"
 	"github.com/hyperdxio/otel-config-go/otelconfig"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/sdk/resource"
 	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
+	_ "golang.org/x/example/helloserver/docs"
 )
 
 var desiredNbObjects = 5
@@ -53,6 +56,9 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 	)
 }
 
+// @title Swagger Example API
+// @version 1.0
+// @description This is a sample server for Sreez demo
 func main() {
 	// Initialize otel config and use it across the entire app
 	println("Service starting up")
@@ -96,19 +102,35 @@ func main() {
 			}
 		}
 	}()
-
-	http.Handle("/", otelhttp.NewHandler(wrapHandler(logger, ExampleHandler), "example-service"))
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
+	r := chi.NewRouter()
+
+	r.Get("/", wrapHandler(logger, ExampleHandler))
+	r.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL(fmt.Sprintf("http://localhost:%s/swagger/doc.json", port)),
+	))
+
 	logger.Info("** Service Started on Port " + port + " **")
 	println("** Service Started on Port " + port + " **")
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	if err := http.ListenAndServe(":"+port, otelhttp.NewHandler(r, "example-service")); err != nil {
 		logger.Fatal(err.Error())
 	}
+}
+
+// ExampleHandler godoc
+// @Summary      Return OpenTelemetry payload as example
+// @Tags         Telemetry
+// @Produce      json
+// @Success      200
+// @Router       / [get]
+func ExampleHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	output := fmt.Sprintf(`{"status":"ok","nbInstances":"%d","intervalInSecs":"%d","customMessage":"%s"}`, nbObjects, intervalInSecs, customMessage)
+	io.WriteString(w, output)
 }
 
 // Use this to wrap all handlers to add trace metadata to the logger
@@ -120,13 +142,6 @@ func wrapHandler(logger *zap.Logger, handler http.HandlerFunc) http.HandlerFunc 
 		logger.Info("request completed", zap.String("path", r.URL.Path), zap.String("method", r.Method))
 	}
 }
-
-func ExampleHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Content-Type", "application/json")
-	output := fmt.Sprintf(`{"status":"ok","nbInstances":"%d","intervalInSecs":"%d","customMessage":"%s"}`, nbObjects, intervalInSecs, customMessage)
-	io.WriteString(w, output)
-}
-
 func recurrentFunction(t time.Time) {
 	formattedTime := t.Format("2006-01-02 15:04:05")
 	fmt.Printf("%v: Allocated objects: %d\n", formattedTime, nbObjects)
