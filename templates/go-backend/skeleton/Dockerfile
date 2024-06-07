@@ -15,6 +15,7 @@ COPY *.go .
 COPY docs/ docs/
 
 # Build the executable
+RUN go install github.com/swaggo/swag/cmd/swag@latest
 RUN go generate
 RUN go build -o run main.go
 

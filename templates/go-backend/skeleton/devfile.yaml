@@ -1,6 +1,6 @@
 schemaVersion: 2.2.2
 metadata:
-  name: ${{ values.repoName }}-${{ values.repoName }}
+  name: ${{ values.orgName }}-${{ values.repoName }}
 components:
   - name: tools
     container:

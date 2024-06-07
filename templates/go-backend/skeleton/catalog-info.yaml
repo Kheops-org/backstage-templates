@@ -28,7 +28,7 @@ metadata:
     - url: http://${{ name }}-sreez.apps.oc-med.wk.nt.local
       title: Open Application
       icon: Link
-    - url: http://${{ name }}-sreez.apps.oc-med.wk.nt.local/swagger/index.html
+    - url: http://${{ name }}-sreez.apps.oc-med.wk.nt.local/swagger
       title: Swagger UI
       icon: Document
     - url: https://devspaces.apps.oc-med.wk.nt.local#https://github.com/${{ values.orgName }}/${{ values.repoName }}
